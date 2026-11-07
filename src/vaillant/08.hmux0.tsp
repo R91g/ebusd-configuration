@@ -467,7 +467,8 @@ namespace Hmux0 {
   }
 
   /** building circuit water flow rate (display D.060) */
-  @inherit(u_rundata)
+  @poll(2)
+  @inherit(r_rundata)
   @ext(0x09, 0x0b)
   model RunDataFlowRate {
     /** building circuit volumetric water flow rate */
@@ -970,6 +971,24 @@ namespace Hmux0 {
 
     @maxLength(5)
     ign_2: IGN;
+  }
+
+  @base(MF, 0x1a, 0x05, 0xff, 0x34, 0x28)
+  model r_silent {
+    @maxLength(3)
+    ign: IGN;
+  }
+
+  @write
+  @base(MF, 0x1a, 0x06, 0xff, 0x34, 0x28)
+  model w_silent {}
+
+  /** compressor silent operation level */
+  @inherit(r_silent, w_silent)
+  @ext
+  model CompressorSilentOperationLevel {
+    @unit("%")
+    value: UCH;
   }
 
   /** central regulator heartbeat */
