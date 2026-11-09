@@ -244,19 +244,21 @@ namespace Hmux0 {
   @inherit(u_11)
   @ext(0x00)
   model StateCompressor {
-    /** compressor speed */
-    @unit("rpm")
-    comp_speed: UIN;
+    /** flow temperature (same as RunDataFlowTemp) */
+    @unit("°C")
+    flow_temp: D2C;
 
-    /** outdoor fan speed */
-    @unit("rpm")
-    fan_speed: UIN;
+    ign: IGN;
 
-    /** compressor modulation */
+    /** compressor modulation in 0.5 % steps (= display value, approx. 0.989 * compressor speed[rps] - 18.8) */
     @unit("%")
+    @divisor(2)
     modulation: UCH;
 
-    /** state bytes */
+    /** operating mode flags (4 = heating, 24 = hot water seen) */
+    mode_flags: UCH;
+
+    /** state bytes (1st: 09 compressor on heating, 19 hot water; 4th: mirror of modulation byte) */
     @maxLength(4)
     state_bytes: HEX;
   }
